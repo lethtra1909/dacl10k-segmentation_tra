@@ -12,7 +12,6 @@ from dacl10k.data.dataset import DACL10kDataset
 from dacl10k.data.transforms import get_transforms
 from dacl10k.models.factory import build_model
 
-
 PROJECT_ROOT = Path(__file__).resolve().parents[1]
 
 DATA_DIR = Path(
@@ -58,8 +57,6 @@ def main():
         int(image_size_cfg[0]),
         int(image_size_cfg[1]),
     )
-
-    num_classes = int(config.get("num_classes", 19))
 
     # Load the validation dataset.
     dataset = DACL10kDataset(

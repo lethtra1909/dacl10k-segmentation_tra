@@ -10,7 +10,6 @@ from dacl10k.data.dataset import DACL10kDataset
 from dacl10k.data.transforms import get_transforms
 from dacl10k.models.factory import build_model
 
-
 PROJECT_ROOT = Path(__file__).resolve().parents[1]
 
 DATA_DIR = Path(

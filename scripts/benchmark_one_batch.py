@@ -1,17 +1,16 @@
-from pathlib import Path
 import sys
+from pathlib import Path
 
 import torch
 import yaml
 from torch.utils.data import DataLoader
 
-# Allow Python to import the project from src/
 PROJECT_ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(PROJECT_ROOT / "src"))
 
-from dacl10k.data.dataset import DACL10kDataset
-from dacl10k.data.transforms import get_transforms
-from dacl10k.models.factory import build_model
+from dacl10k.data.dataset import DACL10kDataset  # noqa: E402
+from dacl10k.data.transforms import get_transforms  # noqa: E402
+from dacl10k.models.factory import build_model  # noqa: E402
 
 
 def main():

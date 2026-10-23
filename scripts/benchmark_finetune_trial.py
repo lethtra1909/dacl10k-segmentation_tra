@@ -1,8 +1,8 @@
 """Run a small real-data DACL10K fine-tuning trial."""
 
-from pathlib import Path
 import random
 import time
+from pathlib import Path
 
 import torch
 import yaml
@@ -12,7 +12,6 @@ from dacl10k.data.dataset import DACL10kDataset
 from dacl10k.data.transforms import get_transforms
 from dacl10k.engine.trainer import Trainer
 from dacl10k.models.factory import build_model
-
 
 PROJECT_ROOT = Path(__file__).resolve().parents[1]
 

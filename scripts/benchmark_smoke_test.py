@@ -1,8 +1,8 @@
 
 import time
 
-import torch
 import segmentation_models_pytorch as smp
+import torch
 
 NUM_CLASSES = 19
 IMAGE_SIZE = 128
