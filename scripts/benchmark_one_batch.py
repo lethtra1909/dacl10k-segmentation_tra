@@ -22,9 +22,7 @@ def main():
     with config_path.open("r", encoding="utf-8") as file:
         config = yaml.safe_load(file)
 
-    data_dir = Path(
-        "/Users/Quyet/Documents/groupProject/dacl10k_v2_devphase"
-    )
+    data_dir = Path("/Users/Quyet/Documents/groupProject/dacl10k_v2_devphase")
 
     print("=" * 60)
     print("DACL10K ONE-BATCH SMOKE TEST")
@@ -105,8 +103,7 @@ def main():
 
     if tuple(logits.shape) != expected_shape:
         raise RuntimeError(
-            f"Output shape {tuple(logits.shape)} "
-            f"does not match target shape {expected_shape}"
+            f"Output shape {tuple(logits.shape)} does not match target shape {expected_shape}"
         )
 
     # --------------------------------------------------
@@ -124,19 +121,12 @@ def main():
     # --------------------------------------------------
     loss.backward()
 
-    gradients = [
-        parameter.grad
-        for parameter in model.parameters()
-        if parameter.grad is not None
-    ]
+    gradients = [parameter.grad for parameter in model.parameters() if parameter.grad is not None]
 
     if not gradients:
         raise RuntimeError("No gradients were generated.")
 
-    all_gradients_finite = all(
-        torch.isfinite(gradient).all().item()
-        for gradient in gradients
-    )
+    all_gradients_finite = all(torch.isfinite(gradient).all().item() for gradient in gradients)
 
     if not all_gradients_finite:
         raise RuntimeError("Some gradients contain NaN or infinity.")
@@ -147,26 +137,19 @@ def main():
     # --------------------------------------------------
     # 8. Perform one optimizer update
     # --------------------------------------------------
-    first_parameter = next(
-        parameter
-        for parameter in model.parameters()
-        if parameter.requires_grad
-    )
+    first_parameter = next(parameter for parameter in model.parameters() if parameter.requires_grad)
 
     parameter_before = first_parameter.detach().clone()
 
     optimizer.step()
 
-    parameter_change = (
-        first_parameter.detach() - parameter_before
-    ).abs().max().item()
+    parameter_change = (first_parameter.detach() - parameter_before).abs().max().item()
 
     print("Maximum parameter change:", parameter_change)
 
     if parameter_change == 0:
         raise RuntimeError(
-            "The checked parameter did not change. "
-            "Inspect the optimizer and gradients."
+            "The checked parameter did not change. Inspect the optimizer and gradients."
         )
 
     print("\nSUCCESS: One-batch smoke test passed.")

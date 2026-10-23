@@ -49,27 +49,19 @@ class MultiLabelIoUMetric:
         """Compute mean IoU over classes with non-zero union."""
 
         # Calculate IoU for each class.
-        per_class_iou = (
-            self.intersection + self.eps
-        ) / (
-            self.union + self.eps
-        )
+        per_class_iou = (self.intersection + self.eps) / (self.union + self.eps)
 
-    # Include only classes that appear in the ground truth
-    # or are predicted as positive.
+        # Include only classes that appear in the ground truth
+        # or are predicted as positive.
         valid_classes = self.union > 0
 
         if valid_classes.any():
-            miou = float(
-                per_class_iou[valid_classes].mean().item()
-            )
+            miou = float(per_class_iou[valid_classes].mean().item())
         else:
             # No valid classes were observed.
             miou = 0.0
 
         return {
             "miou": miou,
-            "per_class_iou": [
-                float(x) for x in per_class_iou.tolist()
-            ],
+            "per_class_iou": [float(x) for x in per_class_iou.tolist()],
         }

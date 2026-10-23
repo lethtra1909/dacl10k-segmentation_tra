@@ -16,18 +16,10 @@ from dacl10k.models.factory import build_model
 PROJECT_ROOT = Path(__file__).resolve().parents[1]
 
 # Actual DACL10K dataset location.
-DATA_DIR = Path(
-    "/Users/Quyet/Documents/groupProject/dacl10k_v2_devphase"
-)
+DATA_DIR = Path("/Users/Quyet/Documents/groupProject/dacl10k_v2_devphase")
 
 # Keep checkpoints outside the Git repository.
-OUTPUT_DIR = (
-    Path.home()
-    / "Documents"
-    / "groupProject"
-    / "dacl10k_benchmark_trial"
-    / "checkpoints"
-)
+OUTPUT_DIR = Path.home() / "Documents" / "groupProject" / "dacl10k_benchmark_trial" / "checkpoints"
 
 NUM_TRAIN_SAMPLES = 16
 NUM_VAL_SAMPLES = 8
@@ -39,8 +31,7 @@ def select_random_subset(dataset, num_samples, seed):
     """Select a reproducible random subset from a dataset."""
     if len(dataset) < num_samples:
         raise ValueError(
-            f"Dataset has only {len(dataset)} samples, "
-            f"but {num_samples} were requested."
+            f"Dataset has only {len(dataset)} samples, but {num_samples} were requested."
         )
 
     generator = torch.Generator().manual_seed(seed)
@@ -91,9 +82,7 @@ def main():
     print(f"Output directory: {OUTPUT_DIR}")
 
     if not DATA_DIR.exists():
-        raise FileNotFoundError(
-            f"Dataset directory does not exist: {DATA_DIR}"
-        )
+        raise FileNotFoundError(f"Dataset directory does not exist: {DATA_DIR}")
 
     # Build the real datasets.
     train_dataset = DACL10kDataset(

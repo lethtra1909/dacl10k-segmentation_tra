@@ -14,13 +14,10 @@ from dacl10k.models.factory import build_model
 
 PROJECT_ROOT = Path(__file__).resolve().parents[1]
 
-DATA_DIR = Path(
-    "/Users/Quyet/Documents/groupProject/dacl10k_v2_devphase"
-)
+DATA_DIR = Path("/Users/Quyet/Documents/groupProject/dacl10k_v2_devphase")
 
 CHECKPOINT_PATH = Path(
-    "~/Documents/groupProject/dacl10k_benchmark_trial/"
-    "checkpoints/best.pt"
+    "~/Documents/groupProject/dacl10k_benchmark_trial/checkpoints/best.pt"
 ).expanduser()
 
 OUTPUT_PATH = PROJECT_ROOT / "reports" / "dacl10k_predictions.png"
@@ -42,9 +39,7 @@ def main():
         raise FileNotFoundError(f"Dataset not found: {DATA_DIR}")
 
     if not CHECKPOINT_PATH.exists():
-        raise FileNotFoundError(
-            f"Checkpoint not found: {CHECKPOINT_PATH}"
-        )
+        raise FileNotFoundError(f"Checkpoint not found: {CHECKPOINT_PATH}")
 
     # Read the project configuration.
     config_path = PROJECT_ROOT / "configs" / "default_config.yaml"

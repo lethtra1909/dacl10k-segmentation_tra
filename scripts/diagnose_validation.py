@@ -12,13 +12,10 @@ from dacl10k.models.factory import build_model
 
 PROJECT_ROOT = Path(__file__).resolve().parents[1]
 
-DATA_DIR = Path(
-    "/Users/Quyet/Documents/groupProject/dacl10k_v2_devphase"
-)
+DATA_DIR = Path("/Users/Quyet/Documents/groupProject/dacl10k_v2_devphase")
 
 CHECKPOINT_PATH = Path(
-    "~/Documents/groupProject/dacl10k_benchmark_trial/"
-    "checkpoints/best.pt"
+    "~/Documents/groupProject/dacl10k_benchmark_trial/checkpoints/best.pt"
 ).expanduser()
 
 NUM_VAL_SAMPLES = 8
@@ -42,14 +39,10 @@ def main():
     print(f"Checkpoint: {CHECKPOINT_PATH}")
 
     if not DATA_DIR.exists():
-        raise FileNotFoundError(
-            f"Dataset directory does not exist: {DATA_DIR}"
-        )
+        raise FileNotFoundError(f"Dataset directory does not exist: {DATA_DIR}")
 
     if not CHECKPOINT_PATH.exists():
-        raise FileNotFoundError(
-            f"Checkpoint does not exist: {CHECKPOINT_PATH}"
-        )
+        raise FileNotFoundError(f"Checkpoint does not exist: {CHECKPOINT_PATH}")
 
     # 2. Read the project configuration.
     config_path = PROJECT_ROOT / "configs" / "default_config.yaml"
@@ -77,8 +70,7 @@ def main():
 
     if len(dataset) < NUM_VAL_SAMPLES:
         raise ValueError(
-            f"Expected at least {NUM_VAL_SAMPLES} validation images, "
-            f"but found {len(dataset)}."
+            f"Expected at least {NUM_VAL_SAMPLES} validation images, but found {len(dataset)}."
         )
 
     # Reproduce the random subset used in the fine-tuning trial.
@@ -135,39 +127,28 @@ def main():
 
             logits = model(images)
             probabilities = torch.sigmoid(logits)
-            probability_sum += probabilities.sum(
-                dim=(0, 2, 3)
-            ).cpu().double()
+            probability_sum += probabilities.sum(dim=(0, 2, 3)).cpu().double()
 
-            logit_sum += logits.sum(
-                dim=(0, 2, 3)
-            ).cpu().double()
+            logit_sum += logits.sum(dim=(0, 2, 3)).cpu().double()
 
-            predictions = (
-                probabilities >= THRESHOLD
-            ).float()
+            predictions = (probabilities >= THRESHOLD).float()
 
             targets_binary = (targets >= 0.5).float()
 
             dims = (0, 2, 3)
 
-            batch_intersection = (
-                predictions * targets_binary
-            ).sum(dim=dims).cpu().double()
+            batch_intersection = (predictions * targets_binary).sum(dim=dims).cpu().double()
 
             batch_union = (
-                predictions
-                + targets_binary
-                - predictions * targets_binary
-            ).sum(dim=dims).cpu().double()
-
-            batch_target_positive = (
-                targets_binary.sum(dim=dims).cpu().double()
+                (predictions + targets_binary - predictions * targets_binary)
+                .sum(dim=dims)
+                .cpu()
+                .double()
             )
 
-            batch_predicted_positive = (
-                predictions.sum(dim=dims).cpu().double()
-            )
+            batch_target_positive = targets_binary.sum(dim=dims).cpu().double()
+
+            batch_predicted_positive = predictions.sum(dim=dims).cpu().double()
 
             intersection += batch_intersection
             union += batch_union
@@ -236,11 +217,7 @@ def main():
         gt_pct = target_positive[class_idx].item() / total_pixels * 100
         pred_pct = predicted_positive[class_idx].item() / total_pixels * 100
 
-        print(
-            f"{class_idx:>7} "
-            f"{gt_pct:>17.4f}% "
-            f"{pred_pct:>19.4f}%"
-        )
+        print(f"{class_idx:>7} {gt_pct:>17.4f}% {pred_pct:>19.4f}%")
     print("\nDiagnostic completed. No training was performed.")
 
     total_pixels = NUM_VAL_SAMPLES * image_size[0] * image_size[1]
@@ -250,11 +227,7 @@ def main():
 
     print("\nPROBABILITY DIAGNOSTICS")
     print("-" * 65)
-    print(
-        f"{'Class':>7} "
-        f"{'Mean probability':>20} "
-        f"{'Mean logit':>15}"
-    )
+    print(f"{'Class':>7} {'Mean probability':>20} {'Mean logit':>15}")
     print("-" * 65)
 
     for class_idx in range(num_classes):

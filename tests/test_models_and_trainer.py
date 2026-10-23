@@ -118,6 +118,7 @@ def test_trainer_checkpoint_save_and_resume(tmp_path: Path) -> None:
     for key in orig_state:
         assert torch.allclose(orig_state[key].cpu(), loaded_state[key].cpu())
 
+
 def test_multilabel_iou_metric_ignores_empty_classes() -> None:
     """Verify classes with zero ground-truth and predicted positives
     are excluded from mean IoU.

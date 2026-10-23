@@ -1,4 +1,3 @@
-
 import time
 
 import segmentation_models_pytorch as smp
@@ -14,28 +13,20 @@ print("SMP:", smp.__version__)
 print("Device:", DEVICE)
 
 if not hasattr(smp, "DeepLabV3"):
-    raise RuntimeError(
-        "DeepLabV3 is unavailable in this SMP installation."
-    )
+    raise RuntimeError("DeepLabV3 is unavailable in this SMP installation.")
 
 encoder_names = smp.encoders.get_encoder_names()
-candidates = [
-    name for name in encoder_names
-    if "efficientnet" in name.lower()
-]
+candidates = [name for name in encoder_names if "efficientnet" in name.lower()]
 print("EfficientNet encoder candidates:", candidates)
 
 # Chỉ dùng tên encoder đã xác nhận có trong danh sách.
 encoder_name = next(
-    (name for name in candidates
-     if "b4" in name.lower()),
+    (name for name in candidates if "b4" in name.lower()),
     None,
 )
 
 if encoder_name is None:
-    raise RuntimeError(
-        "No supported EfficientNet-B4 encoder was found."
-    )
+    raise RuntimeError("No supported EfficientNet-B4 encoder was found.")
 
 model = smp.DeepLabV3(
     encoder_name=encoder_name,
@@ -46,9 +37,7 @@ model = smp.DeepLabV3(
 ).to(DEVICE)
 
 model.eval()
-images = torch.randn(
-    1, 3, IMAGE_SIZE, IMAGE_SIZE, device=DEVICE
-)
+images = torch.randn(1, 3, IMAGE_SIZE, IMAGE_SIZE, device=DEVICE)
 
 start = time.perf_counter()
 
